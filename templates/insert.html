@@ -1,0 +1,16 @@
+<html>
+<body>
+	<form method="GET" action="/gps">
+		lat : <input type = "text" name= "req_lat" />
+		lng : <input type ="text" name="req_lng"/>
+		<input type="submit"/>
+    </form>
+    <div>
+        {% if req_lat == None %}
+            <h5>value is null yet</h5>
+        {% else %}
+            <h5> {{req_lat}} {{req_lng}} </h5>
+        {% endif %}
+    </div>
+</body>
+</html>
