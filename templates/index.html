@@ -21,7 +21,9 @@
   <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
   <!-- Custom styles for this template -->
-  <link href="/static/css/agency.css?ver=18" rel="stylesheet">
+  <link href="/static/css/agency.css?ver=22" rel="stylesheet">
+
+  {{sndmap.js}}
 
 </head>
 
@@ -115,8 +117,9 @@
           <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
         </div>
       </div>
-      <div>
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3167.4531352476124!2d127.12599651494435!3d37.450021729819866!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca8a401f3127b%3A0x39d64e7ee201cd15!2z6rCA7LKc64yA7ZWZ6rWQIOq4gOuhnOuyjOy6oO2NvOyKpA!5e0!3m2!1sko!2skr!4v1505716247174" width="1200" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+       <!--<iframe src={{sndmap.html}} width="1200" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>-->
+       <div class="google-map">
+         {{ sndmap.html }}
       </div>
     </div>
   </section>
