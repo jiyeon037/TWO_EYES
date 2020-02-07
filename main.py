@@ -46,26 +46,25 @@ def index():
     cnt = re.findall('\d', str(cnt)).__getitem__(0)
     cnt = int(cnt)
 
-    # for i in range(0, cnt):
+    gps_list=[]
 
-    row_lat = re.findall('\d+.\d+', str(row).split(",")[0]).__getitem__(0)
-    row_lng = re.findall('\d+.\d+', str(row).split(",")[1]).__getitem__(0)
+    # cnt 포함 X
+    for i in range(0, cnt):
+        row_lat = re.findall('\d+.\d+', str(row).split(",")[i*2]).__getitem__(0)
+        row_lng = re.findall('\d+.\d+', str(row).split(",")[i*2+1]).__getitem__(0)
 
-    row_lat = float(row_lat)
-    row_lng = float(row_lng)
+        row_lat = float(row_lat)
+        row_lng = float(row_lng)
 
-    gps_list=[(center_lat, center_lng)]
-    gps_list.append((row_lat, row_lng))
-    print(gps_list)
+        gps_list.append((row_lat, row_lng))
+        print(gps_list)
 
     sndmap = Map(
         style="height: 450px; width: 1200px;",
         identifier="sndmap",
         varname="sndmap",
-        zoom=16, #13
-
+        zoom=15, #13
         # 추후 idx 0값을 center lat lng으로 설정할 것
-
         lat=center_lat,
         lng=center_lng,
         markers=gps_list
