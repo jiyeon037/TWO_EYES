@@ -3,7 +3,7 @@ __pycache__/
 .vscode/
 venv/
 test/
-module/dbModule/
+module/
 
 #file
 dbModule.py
