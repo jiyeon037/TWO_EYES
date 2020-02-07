@@ -2,6 +2,8 @@
 __pycache__/
 .vscode/
 venv/
+test/
+module/dbModule/
 
 #file
 dbModule.py
