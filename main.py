@@ -60,7 +60,7 @@ def index():
         print(gps_list)
 
     sndmap = Map(
-        style="height: 450px; width: 1200px;",
+        style="height: 450px; width: 1150px;",
         identifier="sndmap",
         varname="sndmap",
         zoom=15, #13
