@@ -1,28 +1,29 @@
 from flask import Flask, render_template, Response, request
-from flask_bootstrap import Bootstrap
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map, icons
 from flask import current_app as current_app
-from module import dbModule
+import dbModule
 import re
 
 app = Flask(__name__, template_folder="templates")
-Bootstrap(app)
 
 app.config['GOOGLEMAPS_KEY'] = "AIzaSyCYsvWvFTrZTWyS81JJiEeHMXXlFgTtxLY"
 GoogleMaps(app)
 
 db_class = dbModule.Database()
 
-@app.route('/gps', methods=['GET'])
-def gps():
+@app.route('/data', methods=['GET'])
+def data():
     lat = request.args.get('req_lat')
     lng = request.args.get('req_lng')
-
+    t1 = request.args.get('req_t1')
+    t2 = request.args.get('req_t2')
+    h = request.args.get('req_h')
+    
     #print(lat,",",lng)
 
-    sql = """insert into gps(lat, lng) values (%s, %s)"""
-    db_class.execute(sql, (lat, lng))
+    sql = """insert into data(lat, lng, t1, t2, h) values (%s, %s, %s, %s, %s)"""
+    db_class.execute(sql, (lat, lng, t1, t2, h))
     db_class.commit()
 
     return render_template('insert.html', req_lat=lat, req_lng=lng)
@@ -37,10 +38,10 @@ center_lng=127.045322
 @app.route('/')
 def index():
 
-    sql = """select lat, lng from gps"""
+    sql = """select lat, lng from data"""
     row = db_class.executeAll(sql)
 
-    db_class.execute("select count(*) from gps")
+    db_class.execute("select count(*) from data")
     #cnt = (list(db_class.cursor))
     cnt = db_class.cursor.fetchone()
     cnt = re.findall('\d', str(cnt)).__getitem__(0)
@@ -75,3 +76,4 @@ def index():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    # app.run(host='0,0,0,0', port=5000, debug=True)
