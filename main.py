@@ -21,15 +21,15 @@ def data():
     t1 = request.args.get('req_t1')
     t2 = request.args.get('req_t2')
     h = request.args.get('req_h')
+    date = request.args.get('req_date')
+    time = request.args.get('req_time')
 
-    sql = """insert into data(lat, lng, t1, t2, h) values (%s, %s, %s, %s, %s)"""
-    db_class.execute(sql, (lat, lng, t1, t2, h))
+
+    sql = """insert into data(lat, lng, t1, t2, h, date, time) values (%s, %s, %s, %s, %s, %s, %s)"""
+    db_class.execute(sql, (lat, lng, t1, t2, h, date, time))
     db_class.commit()
 
     return render_template('insert.html')
-
-center_lat=37.557402
-center_lng=127.045322
 
 @app.route('/')
 def index():
@@ -40,7 +40,6 @@ def index():
 
     ##### cnt #####
     db_class.execute("select count(*) from data")
-    #cnt = (list(db_class.cursor))
     cnt = db_class.cursor.fetchone()
     cnt = int(re.findall('\d', str(cnt)).__getitem__(0))
 
@@ -60,8 +59,8 @@ def index():
         varname="sndmap",
         zoom=15, #13
         # 추후 idx 0값을 center lat lng으로 설정할 것
-        lat=center_lat,
-        lng=center_lng,
+        lat=row[0].get('lat'),
+        lng=row[0].get('lng'),
         markers=gps_list
     )
 

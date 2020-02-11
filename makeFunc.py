@@ -26,6 +26,7 @@ class Func():
             row_lng = float(row[i].get('lng'))
             gps_list.append((row_lat, row_lng))
         
+        print("@@@@@@@, ", row)
         print(gps_list)
 
         sndmap = Map(
