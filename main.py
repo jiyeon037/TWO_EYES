@@ -1,3 +1,5 @@
+#-*- coding: utf-8 -*-
+
 from flask import Flask, render_template, Response, request
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map, icons
@@ -19,8 +21,6 @@ def data():
     t1 = request.args.get('req_t1')
     t2 = request.args.get('req_t2')
     h = request.args.get('req_h')
-    
-    #print(lat,",",lng)
 
     sql = """insert into data(lat, lng, t1, t2, h) values (%s, %s, %s, %s, %s)"""
     db_class.execute(sql, (lat, lng, t1, t2, h))
@@ -28,12 +28,8 @@ def data():
 
     return render_template('insert.html')
 
-
 center_lat=37.557402
 center_lng=127.045322
-
-# gps_list=[(), (), ()] 이렇게 받아와서 Map의 markers에 대입할 것
-
 
 @app.route('/')
 def index():
@@ -73,5 +69,5 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
-    # app.run(host='0,0,0,0', port=5000, debug=True)
+    #app.run(debug=True)
+    app.run(host='0,0,0,0', port=5000, debug=True)
