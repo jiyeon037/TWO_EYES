@@ -26,7 +26,7 @@ def data():
     db_class.execute(sql, (lat, lng, t1, t2, h))
     db_class.commit()
 
-    return render_template('insert.html', req_lat=lat, req_lng=lng)
+    return render_template('insert.html')
 
 
 center_lat=37.557402
@@ -38,9 +38,17 @@ center_lng=127.045322
 @app.route('/')
 def index():
 
+    ##### map #####
     sql = """select lat, lng from data"""
     row = db_class.executeAll(sql)
 
+    #### table ####
+    sql2 = "select * from data"
+    row2 = db_class.executeAll(sql2)
+
+    print("@@@@ ", row2)
+
+    ##### cnt #####
     db_class.execute("select count(*) from data")
     #cnt = (list(db_class.cursor))
     cnt = db_class.cursor.fetchone()
@@ -53,7 +61,6 @@ def index():
     for i in range(0, cnt):
         row_lat = re.findall('\d+.\d+', str(row).split(",")[i*2]).__getitem__(0)
         row_lng = re.findall('\d+.\d+', str(row).split(",")[i*2+1]).__getitem__(0)
-
         row_lat = float(row_lat)
         row_lng = float(row_lng)
 
@@ -71,7 +78,7 @@ def index():
         markers=gps_list
     )
 
-    return render_template('index.html', sndmap=sndmap, GOOGLEMAPS_KEY=request.args.get('apikey'))
+    return render_template('index.html', sndmap=sndmap, GOOGLEMAPS_KEY=request.args.get('apikey'), row2=row2, len=len(row2))
 
 
 if __name__ == '__main__':
