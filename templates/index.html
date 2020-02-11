@@ -148,9 +148,11 @@
             <tbody>
               {% for i in range(0, len) %}
               <tr>
-                {% for key, value in row[i].items() %}
-                <td> {{value}} </td>
-                {% endfor %}
+                <td> {{row[i].get('lat')}} </td>
+                <td> {{row[i].get('lng')}} </td>
+                <td> {{row[i].get('t1')}} </td>
+                <td> {{row[i].get('t2')}} </td>
+                <td> {{row[i].get('h')}} </td>
               </tr>
               {% endfor %}
             </tbody>
