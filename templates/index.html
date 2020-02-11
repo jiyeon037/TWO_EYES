@@ -146,10 +146,10 @@
               </tr>
             </thead>
             <tbody>
-              {% for i in range(0,len) %}
+              {% for i in range(0, len) %}
               <tr>
-                {% for key, val in row2[i].items() %}
-                <td> {{val}} </td>
+                {% for key, value in row[i].items() %}
+                <td> {{value}} </td>
                 {% endfor %}
               </tr>
               {% endfor %}
