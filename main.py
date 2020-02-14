@@ -60,13 +60,15 @@ def data():
 def index():
 
     #### map, table ####
-    sql = "select * from data"
+    sql = "select * from data order by date"
     row = db_class.executeAll(sql)
 
     ##### cnt #####
     db_class.execute("select count(*) from data")
     cnt = db_class.cursor.fetchone()
-    cnt = int(re.findall('\d', str(cnt)).__getitem__(0))
+
+    #cnt = int(re.findall('\d', str(cnt)).__getitem__(0))
+    cnt = cnt.get('count(*)')
 
     gps_list=[]
 
@@ -76,7 +78,7 @@ def index():
        row_lng = float(row[i].get('lng'))
        
        gps_list.append((row_lat, row_lng))
-       print(gps_list)
+       #print(gps_list)
 
     sndmap = Map(
         style="height: 450px; width: 1150px;",
