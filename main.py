@@ -14,11 +14,11 @@ app.config['GOOGLEMAPS_KEY'] = "AIzaSyCYsvWvFTrZTWyS81JJiEeHMXXlFgTtxLY"
 GoogleMaps(app)
 
 app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER', 'smtp.gmail.com')
-app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT', '465'))
+app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT', '587'))
 app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME', 'twiceteam1@gmail.com') #이 계정 보안 풀어야했음
 app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD', 'magiceco')
-app.config['MAIL_USE_TLS'] = int(os.environ.get('MAIL_USE_TLS', False))
-app.config['MAIL_USE_SSL'] = int(os.environ.get('MAIL_USE_SSL', True))
+app.config['MAIL_USE_TLS'] = int(os.environ.get('MAIL_USE_TLS', True))
+app.config['MAIL_USE_SSL'] = int(os.environ.get('MAIL_USE_SSL', False))
 
 mail = Mail(app)
 
@@ -34,7 +34,8 @@ def email():
         message = request.form['message']
 
         msg = Message('A new message from TWICE', sender=email_address, recipients=['twiceteam3@gmail.com'])
-        msg.body = f"You have received a new message from your website contact form.\nHere are the details:\n\nName: {name}\n\nEmail: {email_address}\n\nPhone: {phone}\n\nMessage: {message}"
+        #msg.body = f"You have received a new message from your website contact form.\nHere are the details:\n\nName: {name}\n\nEmail: {email_address}\n\nPhone: {phone}\n\nMessage: {message}"
+        msg.body = message
         mail.send(msg)
         return 'Sent'
 
@@ -92,5 +93,4 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
-    #app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
