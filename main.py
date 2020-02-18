@@ -5,13 +5,19 @@ from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map, icons
 from flask import current_app as current_app
 from flask_mail import Mail, Message
+from werkzeug import secure_filename
 import dbModule
 import re, os
+import base64
 
 app = Flask(__name__, template_folder="templates")
 
 app.config['GOOGLEMAPS_KEY'] = "AIzaSyCYsvWvFTrZTWyS81JJiEeHMXXlFgTtxLY"
 GoogleMaps(app)
+
+
+UPLOAD_FOLDER = './uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER', 'smtp.gmail.com')
 app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT', '587'))
@@ -39,22 +45,34 @@ def email():
         mail.send(msg)
         return 'Sent'
 
+
 @app.route('/data', methods=['GET'])
 def data():
-    lat = request.args.get('req_lat')
-    lng = request.args.get('req_lng')
-    t1 = request.args.get('req_t1')
-    t2 = request.args.get('req_t2')
-    h = request.args.get('req_h')
-    date = request.args.get('req_date')
-    time = request.args.get('req_time')
+    if request.method == 'GET':
+        lat = request.args.get('req_lat')
+        lng = request.args.get('req_lng')
+        t1 = request.args.get('req_t1')
+        t2 = request.args.get('req_t2')
+        h = request.args.get('req_h')
+        date = request.args.get('req_date')
+        time = request.args.get('req_time')
+
+        sql = """insert into data(lat, lng, t1, t2, h, date, time) values (%s, %s, %s, %s, %s, %s, %s)"""
+        db_class.execute(sql, (lat, lng, t1, t2, h, date, time))
+        db_class.commit()
+
+        return render_template('insert.html')
 
 
-    sql = """insert into data(lat, lng, t1, t2, h, date, time) values (%s, %s, %s, %s, %s, %s, %s)"""
-    db_class.execute(sql, (lat, lng, t1, t2, h, date, time))
-    db_class.commit()
+@app.route('/data2', methods=['POST'])
+def data2():
+    file = request.files['file']
+    if file:
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
 
     return render_template('insert.html')
+
 
 @app.route('/')
 def index():
