@@ -61,7 +61,7 @@ def data():
         db_class.execute(sql, (lat, lng, t1, t2, h, date, time))
         db_class.commit()
 
-        return render_template('insert.html')
+    return render_template('insert.html')
 
 
 @app.route('/data2', methods=['POST'])
