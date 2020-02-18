@@ -5,9 +5,8 @@ from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map, icons
 from flask import current_app as current_app
 from flask_mail import Mail, Message
-from werkzeug import secure_filename
 import dbModule
-import re, os
+import re, os, datetime
 import base64
 
 app = Flask(__name__, template_folder="templates")
@@ -33,45 +32,43 @@ db_class = dbModule.Database()
 
 @app.route('/email', methods=['POST'])
 def email():
-    if request.method == 'POST':
-        name = request.form['name']
-        email_address = request.form['email']
-        phone = request.form['phone']
-        message = request.form['message']
+    name = request.form['name']
+    email_address = request.form['email']
+    phone = request.form['phone']
+    message = request.form['message']
 
-        msg = Message('A new message from TWICE', sender=email_address, recipients=['twiceteam3@gmail.com'])
-        #msg.body = f"You have received a new message from your website contact form.\nHere are the details:\n\nName: {name}\n\nEmail: {email_address}\n\nPhone: {phone}\n\nMessage: {message}"
-        msg.body = message
-        mail.send(msg)
-        return 'Sent'
+    msg = Message('A new message from TWICE', sender=email_address, recipients=['twiceteam3@gmail.com'])
+    msg.body = "You have received a new message from your website contact form.\nHere are the details:\n\nName: %s\n\nEmail: %s\n\nPhone: %s\n\nMessage: %s" % (name, email_address, phone, message)
+    mail.send(msg)
+    return 'Sent'
 
 
 @app.route('/data', methods=['GET'])
-def data():
-    if request.method == 'GET':
-        lat = request.args.get('req_lat')
-        lng = request.args.get('req_lng')
-        t1 = request.args.get('req_t1')
-        t2 = request.args.get('req_t2')
-        h = request.args.get('req_h')
-        date = request.args.get('req_date')
-        time = request.args.get('req_time')
+def getData():
+    lat = request.args.get('req_lat')
+    lng = request.args.get('req_lng')
+    t1 = request.args.get('req_t1')
+    t2 = request.args.get('req_t2')
+    h = request.args.get('req_h')
+    date = request.args.get('req_date')
+    time = request.args.get('req_time')
 
-        sql = """insert into data(lat, lng, t1, t2, h, date, time) values (%s, %s, %s, %s, %s, %s, %s)"""
-        db_class.execute(sql, (lat, lng, t1, t2, h, date, time))
-        db_class.commit()
+    sql = """insert into data(lat, lng, t1, t2, h, date, time) values (%s, %s, %s, %s, %s, %s, %s)"""
+    db_class.execute(sql, (lat, lng, t1, t2, h, date, time))
+    db_class.commit()
 
-    return render_template('insert.html')
+    return 'Data'
 
 
-@app.route('/data2', methods=['POST'])
-def data2():
+@app.route('/image', methods=['POST'])
+def postImage():
     file = request.files['file']
     if file:
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+        #filename = secure_filename(file.filename)
+        filename = datetime.datetime.now().strftime('%y%m%d_%H%M%S')+'.jpg'
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-    return render_template('insert.html')
+    return 'Image'
 
 
 @app.route('/')
